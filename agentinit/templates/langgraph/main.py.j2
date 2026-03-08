@@ -1,0 +1,9 @@
+from dotenv import load_dotenv
+from agents.base_agent import build_graph
+
+load_dotenv()
+
+if __name__ == "__main__":
+    graph = build_graph()
+    result = graph.invoke({"messages": [{"role": "user", "content": "Hello, agent!"}]})
+    print(result)

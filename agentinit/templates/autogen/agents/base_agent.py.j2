@@ -1,0 +1,28 @@
+import os
+import autogen
+
+config_list = [
+    {
+        "model": "{{ model }}",
+        "api_key": os.getenv("{{ api_key_env }}"),
+        {% if llm_provider == "anthropic" %}"api_type": "anthropic",{% endif %}
+        {% if llm_provider == "groq" %}"base_url": "https://api.groq.com/openai/v1",{% endif %}
+    }
+]
+
+llm_config = {"config_list": config_list}
+
+assistant = autogen.AssistantAgent(
+    name="assistant",
+    llm_config=llm_config,
+)
+
+user_proxy = autogen.UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="NEVER",
+    max_consecutive_auto_reply=1,
+)
+
+
+def run_agent(message: str):
+    user_proxy.initiate_chat(assistant, message=message)

@@ -1,0 +1,10 @@
+smolagents
+{% if llm_provider == "openai" %}openai{% endif %}
+{% if llm_provider == "anthropic" %}anthropic{% endif %}
+{% if llm_provider == "groq" %}groq{% endif %}
+{% if llm_provider == "azure" %}openai
+azure-identity{% endif %}
+{% if llm_provider == "bedrock" %}boto3
+anthropic[bedrock]{% endif %}
+{% if llm_provider == "gemini" %}google-generativeai{% endif %}
+python-dotenv

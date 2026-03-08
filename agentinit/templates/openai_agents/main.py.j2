@@ -1,0 +1,10 @@
+from dotenv import load_dotenv
+from agents.base_agent import create_agent
+from agents import Runner
+
+load_dotenv()
+
+if __name__ == "__main__":
+    agent = create_agent()
+    result = Runner.run_sync(agent, "Hello, agent!")
+    print(result.final_output)

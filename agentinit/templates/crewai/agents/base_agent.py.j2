@@ -1,0 +1,27 @@
+import os
+from crewai import Agent, Task, Crew, Process
+from tools.sample_tool import sample_tool
+
+base_agent = Agent(
+    role="Assistant",
+    goal="Help the user accomplish their task",
+    backstory="You are a helpful AI assistant.",
+    tools=[sample_tool],
+    verbose=True,
+    llm="{{ llm_provider }}/{{ model }}",
+)
+
+task = Task(
+    description="Greet the user and introduce yourself.",
+    expected_output="A friendly greeting message.",
+    agent=base_agent,
+)
+
+
+def build_crew() -> Crew:
+    return Crew(
+        agents=[base_agent],
+        tasks=[task],
+        process=Process.sequential,
+        verbose=True,
+    )

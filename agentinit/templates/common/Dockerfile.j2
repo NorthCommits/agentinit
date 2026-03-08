@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+ENV {{ api_key_env }}=""
+{% if llm_provider == "azure" %}
+ENV AZURE_OPENAI_ENDPOINT=""
+ENV AZURE_OPENAI_API_KEY=""
+{% endif %}
+{% if llm_provider == "bedrock" %}
+ENV AWS_ACCESS_KEY_ID=""
+ENV AWS_SECRET_ACCESS_KEY=""
+ENV AWS_REGION="us-east-1"
+{% endif %}
+
+CMD ["python", "main.py"]

@@ -1,0 +1,12 @@
+from crewai.tools import BaseTool
+
+
+class SampleTool(BaseTool):
+    name: str = "Sample Tool"
+    description: str = "A sample tool stub. Replace with your real logic."
+
+    def _run(self, query: str) -> str:
+        return f"Tool received: {query}"
+
+
+sample_tool = SampleTool()

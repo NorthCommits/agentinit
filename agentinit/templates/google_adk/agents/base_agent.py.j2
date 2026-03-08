@@ -1,0 +1,11 @@
+import os
+from google.adk.agents import Agent
+from tools.sample_tool import sample_tool
+
+root_agent = Agent(
+    name="{{ project_name }}_agent",
+    model="{{ model }}",
+    description="A helpful AI assistant.",
+    instruction="You are a helpful assistant. Answer the user's questions clearly.",
+    tools=[sample_tool],
+)

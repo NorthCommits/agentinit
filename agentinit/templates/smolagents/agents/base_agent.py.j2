@@ -1,0 +1,52 @@
+import os
+from smolagents import CodeAgent
+from tools.sample_tool import sample_tool
+
+{% if llm_provider == "openai" %}
+from smolagents import OpenAIServerModel
+model = OpenAIServerModel(
+    model_id="{{ model }}",
+    api_key=os.getenv("{{ api_key_env }}"),
+)
+{% elif llm_provider == "anthropic" %}
+from smolagents import LiteLLMModel
+model = LiteLLMModel(
+    model_id="anthropic/{{ model }}",
+    api_key=os.getenv("{{ api_key_env }}"),
+)
+{% elif llm_provider == "groq" %}
+from smolagents import LiteLLMModel
+model = LiteLLMModel(
+    model_id="groq/{{ model }}",
+    api_key=os.getenv("{{ api_key_env }}"),
+)
+{% elif llm_provider == "azure" %}
+from smolagents import OpenAIServerModel
+model = OpenAIServerModel(
+    model_id="{{ model }}",
+    api_base=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+)
+{% elif llm_provider == "bedrock" %}
+from smolagents import LiteLLMModel
+model = LiteLLMModel(
+    model_id="bedrock/{{ model }}",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    aws_region_name=os.getenv("AWS_REGION", "us-east-1"),
+)
+{% elif llm_provider == "gemini" %}
+from smolagents import LiteLLMModel
+model = LiteLLMModel(
+    model_id="gemini/{{ model }}",
+    api_key=os.getenv("{{ api_key_env }}"),
+)
+{% endif %}
+
+
+def create_agent() -> CodeAgent:
+    return CodeAgent(
+        tools=[sample_tool],
+        model=model,
+        max_steps=5,
+    )

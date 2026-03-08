@@ -1,0 +1,32 @@
+import os
+from langgraph.graph import StateGraph, END
+from typing import TypedDict, List
+
+{% if llm_provider == "openai" %}
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(model="{{ model }}", api_key=os.getenv("{{ api_key_env }}"))
+{% elif llm_provider == "anthropic" %}
+from langchain_anthropic import ChatAnthropic
+llm = ChatAnthropic(model="{{ model }}", api_key=os.getenv("{{ api_key_env }}"))
+{% elif llm_provider == "groq" %}
+from langchain_groq import ChatGroq
+llm = ChatGroq(model="{{ model }}", api_key=os.getenv("{{ api_key_env }}"))
+{% endif %}
+
+
+class AgentState(TypedDict):
+    messages: List[dict]
+
+
+def agent_node(state: AgentState) -> AgentState:
+    response = llm.invoke(state["messages"])
+    state["messages"].append({"role": "assistant", "content": response.content})
+    return state
+
+
+def build_graph() -> StateGraph:
+    graph = StateGraph(AgentState)
+    graph.add_node("agent", agent_node)
+    graph.set_entry_point("agent")
+    graph.add_edge("agent", END)
+    return graph.compile()

@@ -1,0 +1,8 @@
+openai-agents
+{% if llm_provider == "openai" %}openai{% endif %}
+{% if llm_provider == "azure" %}openai
+azure-identity{% endif %}
+{% if llm_provider == "bedrock" %}boto3
+anthropic[bedrock]{% endif %}
+{% if llm_provider == "gemini" %}google-generativeai{% endif %}
+python-dotenv

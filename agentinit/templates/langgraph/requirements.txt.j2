@@ -1,0 +1,8 @@
+langgraph
+{% if llm_provider == "openai" %}openai
+langchain-openai{% endif %}
+{% if llm_provider == "anthropic" %}anthropic
+langchain-anthropic{% endif %}
+{% if llm_provider == "groq" %}groq
+langchain-groq{% endif %}
+python-dotenv

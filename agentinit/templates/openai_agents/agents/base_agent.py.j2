@@ -1,0 +1,36 @@
+import os
+from agents import Agent
+from tools.sample_tool import sample_tool
+
+{% if llm_provider == "openai" %}
+from openai import AsyncOpenAI
+client = AsyncOpenAI(api_key=os.getenv("{{ api_key_env }}"))
+{% elif llm_provider == "azure" %}
+from openai import AsyncAzureOpenAI
+client = AsyncAzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_version="2024-02-01",
+)
+{% elif llm_provider == "gemini" %}
+from openai import AsyncOpenAI
+client = AsyncOpenAI(
+    api_key=os.getenv("{{ api_key_env }}"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+)
+{% elif llm_provider == "bedrock" %}
+from openai import AsyncOpenAI
+client = AsyncOpenAI(
+    api_key=os.getenv("{{ api_key_env }}"),
+    base_url="https://bedrock-runtime.{{ region }}.amazonaws.com",
+)
+{% endif %}
+
+
+def create_agent() -> Agent:
+    return Agent(
+        name="{{ project_name }}_agent",
+        instructions="You are a helpful assistant. Answer the user's questions clearly.",
+        model="{{ model }}",
+        tools=[sample_tool],
+    )

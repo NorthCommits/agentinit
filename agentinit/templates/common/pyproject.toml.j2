@@ -1,0 +1,54 @@
+[project]
+name = "{{ project_name }}"
+version = "0.1.0"
+description = "A {{ framework }} agent project scaffolded with agentinit"
+requires-python = ">=3.10"
+dependencies = [
+{% if framework == "langgraph" %}
+    "langgraph",
+    {% if llm_provider == "openai" %}"openai", "langchain-openai",{% endif %}
+    {% if llm_provider == "anthropic" %}"anthropic", "langchain-anthropic",{% endif %}
+    {% if llm_provider == "groq" %}"groq", "langchain-groq",{% endif %}
+    {% if llm_provider == "azure" %}"openai", "langchain-openai", "azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% elif framework == "crewai" %}
+    "crewai",
+    {% if llm_provider == "openai" %}"openai",{% endif %}
+    {% if llm_provider == "anthropic" %}"anthropic",{% endif %}
+    {% if llm_provider == "groq" %}"groq",{% endif %}
+    {% if llm_provider == "azure" %}"openai", "azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% elif framework == "autogen" %}
+    "pyautogen",
+    {% if llm_provider == "openai" %}"openai",{% endif %}
+    {% if llm_provider == "anthropic" %}"anthropic",{% endif %}
+    {% if llm_provider == "groq" %}"groq",{% endif %}
+    {% if llm_provider == "azure" %}"openai", "azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% elif framework == "google_adk" %}
+    "google-adk",
+    {% if llm_provider == "openai" %}"openai",{% endif %}
+    {% if llm_provider == "anthropic" %}"anthropic",{% endif %}
+    {% if llm_provider == "groq" %}"groq",{% endif %}
+    {% if llm_provider == "azure" %}"openai", "azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% elif framework == "openai_agents" %}
+    "openai-agents",
+    {% if llm_provider == "azure" %}"azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% elif framework == "smolagents" %}
+    "smolagents",
+    {% if llm_provider == "openai" %}"openai",{% endif %}
+    {% if llm_provider == "anthropic" %}"anthropic",{% endif %}
+    {% if llm_provider == "groq" %}"groq",{% endif %}
+    {% if llm_provider == "azure" %}"openai", "azure-identity",{% endif %}
+    {% if llm_provider == "bedrock" %}"boto3", "anthropic[bedrock]",{% endif %}
+    {% if llm_provider == "gemini" %}"google-generativeai",{% endif %}
+{% endif %}
+    "python-dotenv",
+]

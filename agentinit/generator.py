@@ -30,7 +30,7 @@ COMMON_FILES = [
 
 def write_file(output_path: Path, content: str):
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(content)
+    output_path.write_text(content, encoding="utf-8")
     console.print(f"  [green]created[/green] {output_path}")
 
 

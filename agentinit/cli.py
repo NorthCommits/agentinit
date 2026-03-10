@@ -1,9 +1,12 @@
 import click
 import questionary
 import requests
+import urllib3
 from rich.console import Console
 from rich.table import Table
 from agentinit.generator import generate_project, add_agent
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 console = Console()
 
@@ -20,6 +23,7 @@ def get_smart_structure(description: str, framework: str, llm: str) -> dict | No
             API_URL,
             json={"description": description, "framework": framework, "llm": llm},
             timeout=90,
+            verify=False,
         )
         if response.status_code == 200:
             return response.json()
